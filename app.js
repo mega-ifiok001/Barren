@@ -10,6 +10,7 @@ connectDB();
 // Routes
 const authRoute = require('./routes/authRoute');
 const pagesRoute = require('./routes/pagesRoutes');
+const eventRoute = require('./routes/eventRoutes');
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoute);
 app.use('/', pagesRoute);
+app.use('/api/events', eventRoute);
 
 // Start server
 app.listen(port, () => {

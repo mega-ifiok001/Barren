@@ -27,8 +27,8 @@ const authController = {
             console.log(`User "${user.firstName} ${user.lastName}" registered.`);
             console.log(user);
 
-            const token = signToken(user._id);
-            return res.status(201).json({ success: true, message: 'User registered successfully.', user: { username: user.username }, token });
+            // const token = signToken(user._id);
+            return res.status(201).json({ success: true, message: 'User registered successfully.', user: { username: user.username } });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ success: false, message: 'Internal server error' });
