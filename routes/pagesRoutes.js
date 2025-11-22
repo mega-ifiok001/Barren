@@ -13,4 +13,4 @@ router.get("/event/create", pagesController.createEvent);
 router.get("/event/create/venue", pagesController.createVenueEvent);
 router.get("/event/create/online", pagesController.createOnlineEvent);
 
-module.exports = router;
+module.exports = router; 
