@@ -1,20 +1,28 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
-function verifyToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+async function verifyToken(req, res, next) {
+    const token = req.cookies['barren-token'];
 
     if (!token) {
-        return res.status(401).json({ success: false, message: 'Access Denied: No token provided!' });
+        console.log("No token found");
+        return res.redirect("/auth/login");
     }
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = verified;
+        const user = await User.findById(verified.userId).select('-password');
+
+        if (!user) {
+            console.log("User not found");
+            return res.redirect("/auth/login");
+        }
+
+        req.user = user; // Attach user info to request
         next();
     } catch (error) {
-        res.status(400).json({ success: false, message: 'Invalid Token' });
+        console.log("Invalid token");
+        res.redirect("/auth/login");
     }
 }
-
 module.exports = verifyToken;

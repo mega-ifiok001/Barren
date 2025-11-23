@@ -61,7 +61,8 @@
                   <div class="form-group mt-4">
                     <label class="form-label">Ticket Name*</label>
                     <input
-                      class="form-control h_40" id="ticketName"
+                      class="form-control h_40"
+                      id="ticketName"
                       type="text"
                       placeholder="Event Ticket Name"
                       value=""
@@ -151,12 +152,14 @@
                     <div class="form-group">
                       <label class="form-label mb-2 fs-14">Ticket Order*</label>
                       <input
-                        class="form-control h_40" id="ticketOrder"
+                        class="form-control h_40"
+                        id="ticketOrder"
                         type="number"
                         value="1"
                         min="1"
                         max="30"
                         placeholder="Enter Sort Order"
+                        disabled
                       />
                     </div>
                     <div class="form-group mt-4">
@@ -164,7 +167,8 @@
                         >Ticket Description*</label
                       >
                       <textarea
-                        class="form-textarea" id="ticketDescription"
+                        class="form-textarea"
+                        id="ticketDescription"
                         placeholder="Description will go here"
                       ></textarea>
                     </div>
@@ -175,12 +179,10 @@
                     <div
                       class="d-flex align-items-center justify-content-between price-variation-head"
                     >
-                      <h5 class="m-0 color-black fs-16">
-                        Variations (<span class="ticket-subtype-count">1</span>)
-                      </h5>
-                      <span class="add-btn btn-hover">
+                      <h5 class="m-0 color-black fs-16">Variations</h5>
+                      <!-- <span class="add-btn btn-hover">
                         <i class="fa-regular fa-square-plus"></i>
-                      </span>
+                      </span> -->
                     </div>
                     <div class="table-responsive">
                       <div
@@ -201,7 +203,8 @@
                           <div class="table-col first-col">
                             <div class="form-group m-0 form-custom-validation">
                               <input
-                                class="form-control h_40" id="ticketPrice"
+                                class="form-control h_40"
+                                id="ticketPrice"
                                 type="number"
                                 min="0"
                                 max="10000"
@@ -214,7 +217,8 @@
                           <div class="table-col second-col">
                             <div class="form-group m-0">
                               <input
-                                class="form-control h_40" id="variationName"
+                                class="form-control h_40"
+                                id="variationName"
                                 type="text"
                                 maxlength="75"
                                 required=""
@@ -222,11 +226,11 @@
                               />
                             </div>
                           </div>
-                          <div class="table-col third-col">
+                          <!-- <div class="table-col third-col">
                             <button type="button" class="v-btn-close btn-hover">
                               <i class="fa-solid fa-xmark"></i>
                             </button>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -426,7 +430,14 @@
             >
               Cancel
             </button>
-            <button type="button" id="saveSingleTicket" class="main-btn min-width btn-hover h_40">
+            <button
+              type="button"
+              id="saveSingleTicket"
+              class="main-btn min-width btn-hover h_40"
+              data-bs-target="#aboutModal"
+              data-bs-toggle="modal"
+              data-bs-dismiss="modal"
+            >
               Save
             </button>
           </div>
@@ -820,14 +831,14 @@
 
             <a
               class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto"
-              href="index.html"
+              href="/"
             >
               <div class="res-main-logo">
-                <img src="images/logo-icon.svg" alt="" />
+                <img src="/images/logo-icon.svg" alt="" />
               </div>
               <div class="main-logo" id="logo">
-                <img src="images/logo.svg" alt="" />
-                <img class="logo-inverse" src="images/dark-logo.svg" alt="" />
+                <img src="/images/logo.svg" alt="" />
+                <img class="logo-inverse" src="/images/dark-logo.svg" alt="" />
               </div>
             </a>
 
@@ -839,7 +850,7 @@
             >
               <div class="offcanvas-header">
                 <div class="offcanvas-logo">
-                  <img src="images/logo-icon.svg" alt="" />
+                  <img src="/images/logo-icon.svg" alt="" />
                 </div>
                 <button
                   type="button"
@@ -852,7 +863,7 @@
               <div class="offcanvas-body">
                 <div class="offcanvas-top-area">
                   <div class="create-bg">
-                    <a href="create.html" class="offcanvas-create-btn">
+                    <a href="/event/create" class="offcanvas-create-btn">
                       <i class="fa-solid fa-calendar-days"></i>
                       <span>Create Event</span>
                     </a>
@@ -860,10 +871,10 @@
                 </div>
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe_5">
                   <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Home</a>
+                    <a class="nav-link active" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="explore_events.html"
+                    <a class="nav-link" href="/events/explore"
                       >Explore Events</a
                     >
                   </li>
@@ -873,16 +884,19 @@
 
             <!-- Right Side: Auth Area -->
             <div class="auth-section d-flex align-items-center">
+              <% if (!user) { %>
               <!-- WHEN USER IS LOGGED OUT → Show Sign In & Sign Up buttons -->
               <div id="auth-logged-out" class="d-flex align-items-center gap-3">
-                <a href="sign_in.html" class="btn btn-outline-light">Sign In</a>
-                <a href="sign_up.html" class="create-btn btn-hover px-4"
+                <a href="/auth/login" class="btn btn-outline-light text-success"
+                  >Sign In</a
+                >
+                <a href="/auth/register" class="create-btn btn-hover px-4"
                   >Sign Up</a
                 >
               </div>
-
+              <% } else { %>
               <!-- WHEN USER IS LOGGED IN → Show Name/Email + Dropdown -->
-              <div id="auth-logged-in" class="dropdown" style="display: none">
+              <div id="auth-logged-in" class="dropdown">
                 <a
                   href="#"
                   class="d-flex align-items-center text-white text-decoration-none"
@@ -892,16 +906,15 @@
                 >
                   <!-- User Avatar + Name (or Email if no name) -->
                   <img
-                    id="user-avatar"
-                    src="images/profile-imgs/img-13.jpg"
+                    src="/images/profile-imgs/img-13.jpg"
                     alt="User"
                     class="rounded-circle me-2"
                     width="40"
                     height="40"
                   />
 
-                  <span id="user-display-name" class="fw-medium"
-                    >Loading...</span
+                  <span class="fw-medium"
+                    ><%= user.firstName %> <%= user.lastName %></span
                   >
                   <i class="fas fa-caret-down ms-2"></i>
                 </a>
@@ -912,37 +925,22 @@
                 >
                   <li class="text-center mb-3">
                     <img
-                      id="user-avatar2"
-                      src="images/profile-imgs/img-13.jpg"
+                      src="/images/profile-imgs/img-13.jpg"
                       class="rounded-circle mb-3"
                       width="80"
                       height="80"
                       alt="User"
                     />
-                    <h6 id="user-fullname" class="mb-1 fw-bold">John Doe</h6>
-                    <p id="user-email" class="text-muted small mb-0">
-                      johndoe@example.com
-                    </p>
+                    <h6 class="mb-1 fw-bold">
+                      <%= user.firstName %> <%= user.lastName %>
+                    </h6>
+                    <p class="text-muted small mb-0"><%= user.email %></p>
                   </li>
 
+                  <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-
-                  <li>
-                    <a
-                      href="my_organisation_dashboard.html"
-                      class="dropdown-item py-2 rounded"
-                    >
-                      My Organisation
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="organiser_profile_view.html"
-                      class="dropdown-item py-2 rounded"
-                    >
-                      My Profile
+                    <a href="/my_invoices" class="dropdown-item py-2 rounded">
+                      My Invoices
                     </a>
                   </li>
                   <li>
@@ -956,6 +954,7 @@
                   </li>
                 </ul>
               </div>
+              <% } %>
             </div>
           </div>
         </nav>
@@ -1048,7 +1047,8 @@
                                     <a href="#" class="a-link">Learn more</a>
                                   </p>
                                   <input
-                                    class="form-control h_50" id="eventName"
+                                    class="form-control h_50"
+                                    id="eventName"
                                     type="text"
                                     placeholder="Enter event name here"
                                     value=""
@@ -1066,7 +1066,8 @@
                                     <a href="#" class="a-link">Learn more</a>
                                   </p>
                                   <select
-                                    class="selectpicker" id="category"
+                                    class="selectpicker"
+                                    id="category"
                                     multiple=""
                                     data-selected-text-format="count > 4"
                                     data-size="5"
@@ -1081,7 +1082,9 @@
                                     <option value="Community and Culture">
                                       Community and Culture
                                     </option>
-                                    <option value="Entrepreneurship">Entrepreneurship</option>
+                                    <option value="Entrepreneurship">
+                                      Entrepreneurship
+                                    </option>
                                     <option value="Education and Training">
                                       Education and Training
                                     </option>
@@ -1094,7 +1097,9 @@
                                     <option value="Film and Entertainment">
                                       Film and Entertainment
                                     </option>
-                                    <option value="Food and Drink">Food and Drink</option>
+                                    <option value="Food and Drink">
+                                      Food and Drink
+                                    </option>
                                     <option value="Government and Politics">
                                       Government and Politics
                                     </option>
@@ -1119,7 +1124,9 @@
                                     <option value="Travel and Outdoor">
                                       Travel and Outdoor
                                     </option>
-                                    <option value="Visual Arts">Visual Arts</option>
+                                    <option value="Visual Arts">
+                                      Visual Arts
+                                    </option>
                                     <option value="Others">Others</option>
                                   </select>
                                 </div>
@@ -1140,7 +1147,8 @@
                                       >
                                       <div class="loc-group position-relative">
                                         <input
-                                          class="form-control h_50 datepicker-here" id="eventDate"
+                                          class="form-control h_50 datepicker-here"
+                                          id="eventDate"
                                           data-language="en"
                                           type="date"
                                           placeholder="MM/DD/YYYY"
@@ -1161,7 +1169,8 @@
                                               >Time</label
                                             >
                                             <select
-                                              class="selectpicker" id="eventTime"
+                                              class="selectpicker"
+                                              id="eventTime"
                                               data-size="5"
                                               data-live-search="true"
                                             >
@@ -1464,29 +1473,49 @@
                                             >Duration</label
                                           >
                                           <select
-                                            class="selectpicker" id="eventDuration"
+                                            class="selectpicker"
+                                            id="eventDuration"
                                             data-size="5"
                                             data-live-search="true"
                                           >
-                                            <option value="15m" selected="selected">15m</option>
+                                            <option
+                                              value="15m"
+                                              selected="selected"
+                                            >
+                                              15m
+                                            </option>
                                             <option value="30m">30m</option>
                                             <option value="45m">45m</option>
-                                            <option
-                                              value="1h"
-                                            >
-                                              1h
+                                            <option value="1h">1h</option>
+                                            <option value="1h 15m">
+                                              1h 15m
                                             </option>
-                                            <option value="1h 15m">1h 15m</option>
-                                            <option value="1h 30m">1h 30m</option>
-                                            <option value="1h 45m">1h 45m</option>
+                                            <option value="1h 30m">
+                                              1h 30m
+                                            </option>
+                                            <option value="1h 45m">
+                                              1h 45m
+                                            </option>
                                             <option value="2h">2h</option>
-                                            <option value="2h 15m">2h 15m</option>
-                                            <option value="2h 30m">2h 30m</option>
-                                            <option value="2h 45m">2h 45m</option>
+                                            <option value="2h 15m">
+                                              2h 15m
+                                            </option>
+                                            <option value="2h 30m">
+                                              2h 30m
+                                            </option>
+                                            <option value="2h 45m">
+                                              2h 45m
+                                            </option>
                                             <option value="3h">3h</option>
-                                            <option value="3h 15m">3h 15m</option>
-                                            <option value="3h 30m">3h 30m</option>
-                                            <option value="3h 45m">3h 45m</option>
+                                            <option value="3h 15m">
+                                              3h 15m
+                                            </option>
+                                            <option value="3h 30m">
+                                              3h 30m
+                                            </option>
+                                            <option value="3h 45m">
+                                              3h 45m
+                                            </option>
                                           </select>
                                         </div>
                                       </div>
@@ -1515,7 +1544,8 @@
                                         </div>
                                       </div>
                                       <img
-                                        src="images/banners/custom-img.html"
+                                        id="eventBannerImage"
+                                        src=""
                                         alt=""
                                       />
                                     </div>
@@ -1532,7 +1562,12 @@
                                     instructions required to attend your event.
                                   </p>
                                   <div class="text-editor mt-4">
-                                    <textarea class="form-control" id="eventDescription" rows="5" placeholder="Describe your event here..."></textarea>
+                                    <textarea
+                                      class="form-control"
+                                      id="eventDescription"
+                                      rows="5"
+                                      placeholder="Describe your event here..."
+                                    ></textarea>
                                   </div>
                                 </div>
                                 <div class="form-group pt_30 pb-2">
@@ -1565,7 +1600,8 @@
                                               >Venue*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="venue"
+                                              class="form-control h_50"
+                                              id="venue"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1578,7 +1614,8 @@
                                               >Address line 1*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="addressLine1"
+                                              class="form-control h_50"
+                                              id="addressLine1"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1591,7 +1628,8 @@
                                               >Address line 2*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="addressLine2"
+                                              class="form-control h_50"
+                                              id="addressLine2"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1606,7 +1644,8 @@
                                               >Country*</label
                                             >
                                             <select
-                                              class="selectpicker" id="country"
+                                              class="selectpicker"
+                                              id="country"
                                               data-size="5"
                                               title="Nothing selected"
                                               data-live-search="true"
@@ -1617,9 +1656,7 @@
                                               <option value="Argentina">
                                                 Argentina
                                               </option>
-                                              <option
-                                                value="Australia"
-                                              >
+                                              <option value="Australia">
                                                 Australia
                                               </option>
                                               <option value="Austria">
@@ -1790,7 +1827,8 @@
                                               >State*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="state"
+                                              class="form-control h_50"
+                                              id="state"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1803,7 +1841,8 @@
                                               >City/Suburb*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="city"
+                                              class="form-control h_50"
+                                              id="city"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1816,7 +1855,8 @@
                                               >Zip/Post Code*</label
                                             >
                                             <input
-                                              class="form-control h_50" id="zipCode"
+                                              class="form-control h_50"
+                                              id="zipCode"
                                               type="text"
                                               placeholder=""
                                               value=""
@@ -1858,12 +1898,7 @@
                                 <div
                                   class="d-flex align-items-center justify-content-between pt-4 pb-3 full-width"
                                 >
-                                  <h3 class="fs-18 mb-0">
-                                    Tickets (<span
-                                      class="venue-event-ticket-counter"
-                                      >3</span
-                                    >)
-                                  </h3>
+                                  <h3 class="fs-18 mb-0">Tickets</h3>
                                   <div
                                     class="dropdown dropdown-default dropdown-normal btn-ticket-type-top"
                                   >
@@ -1918,7 +1953,7 @@
                                     ticket.
                                   </p>
                                 </div>
-                                <div class="ticket-type-item-list mt-4">
+                                <!-- <div class="ticket-type-item-list mt-4">
                                   <div class="price-ticket-card mt-4">
                                     <div
                                       class="price-ticket-card-head d-md-flex flex-wrap align-items-start justify-content-between position-relative p-4"
@@ -2139,7 +2174,7 @@
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                             </div>
                           </div>
@@ -2149,9 +2184,7 @@
                     <div
                       class="step-tab-panel step-tab-location"
                       id="tab_step3"
-                    >
-                      
-                    </div>
+                    ></div>
                   </div>
                   <div class="step-footer step-tab-pager mt-4">
                     <!-- <button
@@ -2168,7 +2201,8 @@
                     </button> -->
                     <button
                       data-direction="finish"
-                      class="btn btn-default btn-hover steps_btn" id="createEventBtn"
+                      class="btn btn-default btn-hover steps_btn"
+                      id="createEventBtn"
                     >
                       Create
                     </button>
@@ -2181,6 +2215,12 @@
       </div>
     </div>
     <!-- Body End-->
+
+    <!-- Loader -->
+    <div class="overlay-loader">
+      <div class="loader-spinner"></div>
+    </div>
+
     <!-- Footer Start-->
     <footer class="footer mt-auto">
       <div class="footer-top">
@@ -2320,78 +2360,126 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
 
     <script>
-        const saveSingleTicketBtn = document.getElementById("saveSingleTicket");
-        const createEventBtn = document.getElementById("createEventBtn");
-
-        saveSingleTicketBtn.addEventListener("click", () => {
-            const ticketDetails = {
-                ticketName: document.getElementById("ticketName").value,
-                ticketOrder: document.getElementById("ticketOrder").value,
-                ticketDescription: document.getElementById("ticketDescription").value,
-                ticketPrice: document.getElementById("ticketPrice").value,
-                variationName: document.getElementById("variationName").value,
-            }
-            console.log(ticketDetails);
+      // Image preview functionality for event banner
+      document
+        .getElementById("eventBanner")
+        .addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              document.getElementById("eventBannerImage").src =
+                event.target.result;
+            };
+            reader.readAsDataURL(file);
+          }
         });
 
-        createEventBtn.addEventListener("click", () => {
-            // Get event details
-            const eventDetails = {
-                eventName: document.getElementById("eventName").value,
-                category: document.getElementById("category").value,
-                eventDate: document.getElementById("eventDate").value,
-                eventTime: document.getElementById("eventTime").value,
-                eventDuration: document.getElementById("eventDuration").value,
-                eventBanner: document.getElementById("eventBanner").value,
-                eventDescription: document.getElementById("eventDescription").value,
-                venue: document.getElementById("venue").value,
-                addressLine1: document.getElementById('addressLine1').value,
-                addressLine2: document.getElementById('addressLine2').value,
-                country: document.getElementById('country').value,
-                state: document.getElementById('state').value,
-                city: document.getElementById('city').value,
-                zipCode: document.getElementById('zipCode').value,
-                tickets: [
-                    {
-                        ticketName: document.getElementById("ticketName").value,
-                        ticketOrder: document.getElementById("ticketOrder").value,
-                        ticketDescription: document.getElementById("ticketDescription").value,
-                        ticketPrice: document.getElementById("ticketPrice").value,
-                        variationName: document.getElementById("variationName").value,
-                    }
-                ]
+      const saveSingleTicketBtn = document.getElementById("saveSingleTicket");
+      const createEventBtn = document.getElementById("createEventBtn");
+
+      saveSingleTicketBtn.addEventListener("click", () => {
+        const ticketDetails = {
+          ticketName: document.getElementById("ticketName").value,
+          ticketOrder: document.getElementById("ticketOrder").value,
+          ticketDescription: document.getElementById("ticketDescription").value,
+          ticketPrice: document.getElementById("ticketPrice").value,
+          variationName: document.getElementById("variationName").value,
+        };
+        console.log(ticketDetails);
+      });
+
+      createEventBtn.addEventListener("click", () => {
+        const formData = new FormData();
+
+        formData.append(
+          "eventName",
+          document.getElementById("eventName").value
+        );
+        formData.append("category", document.getElementById("category").value);
+        formData.append(
+          "eventDate",
+          document.getElementById("eventDate").value
+        );
+        formData.append(
+          "eventTime",
+          document.getElementById("eventTime").value
+        );
+        formData.append(
+          "eventDuration",
+          document.getElementById("eventDuration").value
+        );
+        formData.append(
+          "eventBanner",
+          document.getElementById("eventBanner").files[0]
+        );
+        formData.append(
+          "eventDescription",
+          document.getElementById("eventDescription").value
+        );
+        formData.append("eventOrganizer", "DummyOrganizer");
+        formData.append("venue", document.getElementById("venue").value);
+        formData.append(
+          "addressLine1",
+          document.getElementById("addressLine1").value
+        );
+        formData.append(
+          "addressLine2",
+          document.getElementById("addressLine2").value
+        );
+        formData.append("country", document.getElementById("country").value);
+        formData.append("state", document.getElementById("state").value);
+        formData.append("city", document.getElementById("city").value);
+        formData.append("zipCode", document.getElementById("zipCode").value);
+
+        // tickets as JSON
+        const tickets = [
+          {
+            ticketName: document.getElementById("ticketName").value,
+            ticketOrder: document.getElementById("ticketOrder").value,
+            ticketDescription:
+              document.getElementById("ticketDescription").value,
+            ticketPrice: document.getElementById("ticketPrice").value,
+            variationName: document.getElementById("variationName").value,
+          },
+        ];
+
+        formData.append("tickets", JSON.stringify(tickets));
+
+        createEvent(formData);
+      });
+
+      // Function to create event
+      function createEvent(formData) {
+        // Show loader
+        const loader = document.querySelector(".overlay-loader");
+        loader.classList.add("active");
+
+        fetch("/api/events", {
+          method: "POST",
+          body: formData, // NO JSON, NO HEADERS
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            // Hide loader
+            loader.classList.remove("active");
+
+            if (data.success === true) {
+              alert(data.message);
+              // Optionally redirect to event page or clear form
+              location.assign("/events/explore");
+            } else {
+              alert("Failed to create event");
             }
+          })
+          .catch((err) => {
+            // Hide loader on error
+            loader.classList.remove("active");
 
-        console.log(eventDetails);
-
-        createEvent(eventDetails);
-        });        
-
-        // Function to create event
-        function createEvent(eventDetails) {
-            console.log('Creating event...');
-            
-            fetch("/api/events", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(eventDetails),
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                if (data.success = true) {
-                    alert(data.message);
-                } else {
-                    alert("Failed to create event");
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                alert("Failed to create event");
-            });
-        }
+            console.error(err);
+            alert("Failed to create event");
+          });
+      }
     </script>
 
     <script>
@@ -2407,6 +2495,13 @@
           "blockQuote",
         ],
       }).catch((err) => console.error(err));
+    </script>
+    <script>
+      function signOutUser() {
+        document.cookie =
+          "barren-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/auth/login";
+      }
     </script>
   </body>
 </html>

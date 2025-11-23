@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <!-- Mirrored from www.gambolthemes.net/html-items/barren-html/disable-demo-link/venue_event_detail_view.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Nov 2025 21:37:46 GMT -->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, shrink-to-fit=9" />
+    <meta name="description" content="<%= event.eventName %>" />
+    <!-- <meta name="author" content="Gambolthemes" /> -->
+    <title>Barren - <%= event.eventName %></title>
+
+    <!-- Favicon Icon -->
+    <link rel="icon" type="image/png" href="<%= event.eventBanner %>" />
+
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="/vendor/unicons-2.0.1/css/unicons.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+    <link href="/css/responsive.css" rel="stylesheet" />
+    <link href="/css/night-mode.css" rel="stylesheet" />
+
+    <!-- Vendor Stylesheets -->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="/vendor/OwlCarousel/assets/owl.carousel.css" rel="stylesheet" />
+    <link
+      href="/vendor/OwlCarousel/assets/owl.theme.default.min.css"
+      rel="stylesheet"
+    />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      href="/vendor/bootstrap-select/dist/css/bootstrap-select.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <!-- Header Start-->
+    <header class="header">
+      <div class="header-inner">
+        <nav
+          class="navbar navbar-expand-lg bg-barren barren-head navbar fixed-top justify-content-sm-start pt-0 pb-0"
+        >
+          <div class="container">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasNavbar"
+              aria-controls="offcanvasNavbar"
+            >
+              <span class="navbar-toggler-icon">
+                <i class="fa-solid fa-bars"></i>
+              </span>
+            </button>
+            <a
+              class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto"
+              href="/"
+            >
+              <div class="res-main-logo">
+                <img src="/images/logo-icon.svg" alt="" />
+              </div>
+              <div class="main-logo" id="logo">
+                <img src="/images/logo.svg" alt="" />
+                <img class="logo-inverse" src="/images/dark-logo.svg" alt="" />
+              </div>
+            </a>
+            <div
+              class="offcanvas offcanvas-start"
+              tabindex="-1"
+              id="offcanvasNavbar"
+              aria-labelledby="offcanvasNavbarLabel"
+            >
+              <div class="offcanvas-header">
+                <div class="offcanvas-logo" id="offcanvasNavbarLabel">
+                  <img src="/images/logo-icon.svg" alt="" />
+                </div>
+                <button
+                  type="button"
+                  class="close-btn"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+              <div class="offcanvas-body">
+                <div class="offcanvas-top-area">
+                  <div class="create-bg">
+                    <a href="/event/create" class="offcanvas-create-btn">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      <span>Create Event</span>
+                    </a>
+                  </div>
+                </div>
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe_5">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="/">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/event/explore">Explore Events</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="auth-section d-flex align-items-center">
+              <% if (!user) { %>
+              <div id="auth-logged-out" class="d-flex align-items-center gap-3">
+                <a href="/auth/login" class="btn btn-outline-light text-success"
+                  >Sign In</a
+                >
+                <a href="/auth/register" class="create-btn btn-hover px-4"
+                  >Sign Up</a
+                >
+              </div>
+              <% } else { %>
+              <div id="auth-logged-in" class="dropdown">
+                <a
+                  href="#"
+                  class="d-flex align-items-center text-white text-decoration-none"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="/images/profile-imgs/img-13.jpg"
+                    alt="User"
+                    class="rounded-circle me-2"
+                    width="40"
+                    height="40"
+                  />
+                  <span class="fw-medium"
+                    ><%= user.firstName %> <%= user.lastName %></span
+                  >
+                  <i class="fas fa-caret-down ms-2"></i>
+                </a>
+                <ul
+                  class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
+                >
+                  <li class="text-center mb-3">
+                    <img
+                      src="/images/profile-imgs/img-13.jpg"
+                      class="rounded-circle mb-3"
+                      width="80"
+                      height="80"
+                      alt="User"
+                    />
+                    <h6 class="mb-1 fw-bold">
+                      <%= user.firstName %> <%= user.lastName %>
+                    </h6>
+                    <p class="text-muted small mb-0"><%= user.email %></p>
+                  </li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a
+                      href="my_organisation_dashboard.html"
+                      class="dropdown-item py-2 rounded"
+                      >My Organisation</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="organiser_profile_view.html"
+                      class="dropdown-item py-2 rounded"
+                      >My Profile</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      class="dropdown-item py-2 rounded text-danger fw-medium"
+                      onclick="signOutUser(); return false;"
+                      >Sign Out</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <% } %>
+            </div>
+          </div>
+        </nav>
+        <div class="overlay"></div>
+      </div>
+    </header>
+    <!-- Header End-->
+    <!-- Body Start-->
+    <div class="wrapper">
+      <div class="breadcrumb-block">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 col-md-10">
+              <div class="barren-breadcrumb">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="index.html">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="explore_events.html">Explore Events</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      Venue Event Detail View
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="event-dt-block p-80">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12">
+              <div class="event-top-dts">
+                <div class="event-top-date">
+                  <span class="event-month"
+                    ><%= new Date(event.eventDate).toLocaleString('default', {
+                    month: 'short' }) %></span
+                  >
+                  <span class="event-date"
+                    ><%= new Date(event.eventDate).getDate() %></span
+                  >
+                </div>
+                <div class="event-top-dt">
+                  <h3 class="event-main-title"><%= event.eventName %></h3>
+                  <div class="event-top-info-status">
+                    <span class="event-type-name"
+                      ><i class="fa-solid fa-location-dot"></i><%= event.venue
+                      %>
+                    </span>
+                    <span class="event-type-name details-hr"
+                      >Starts on
+                      <span class="ev-event-date"
+                        ><%= event.eventDate %></span
+                      ></span
+                    >
+                    <span class="event-type-name details-hr"
+                      ><%= event.eventDuration %></span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8 col-lg-7 col-md-12">
+              <div class="main-event-dt">
+                <div class="event-img">
+                  <img src="<%= event.eventBanner %>" alt="" />
+                </div>
+                <div class="share-save-btns">
+                  <!-- <button class="sv-btn me-2">
+                    <i class="fa-regular fa-bookmark me-2"></i>Save
+                  </button> -->
+                  <div class="share-options d-inline-block ms-2">
+                    <!-- <a
+                      href="#"
+                      class="social-link share-btn me-2"
+                      data-platform="whatsapp"
+                      title="Share on WhatsApp"
+                      >Share on WhatsApp<i
+                        class="fa-brands fa-whatsapp fa-lg text-success"
+                      ></i
+                    ></a> -->
+                    <a
+                      href="#"
+                      class="social-link share-btn btn btn-success"
+                      data-platform="copy"
+                      title="Copy Link"
+                      >Share &rightarrow;<i
+                        class="fa-solid fa-link fa-lg text-secondary"
+                      ></i
+                    ></a>
+                  </div>
+                </div>
+
+                <div class="main-event-content">
+                  <h4>About This Event</h4>
+                  <p><%= event.eventDescription %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-5 col-md-12">
+              <div class="main-card event-right-dt">
+                <div class="bp-title">
+                  <h4>Event Details</h4>
+                </div>
+                <!-- <div class="time-left">
+                  <div class="countdown">
+                    <div class="countdown-item"><span id="day"></span>days</div>
+                    <div class="countdown-item">
+                      <span id="hour"></span>Hours
+                    </div>
+                    <div class="countdown-item">
+                      <span id="minute"></span>Minutes
+                    </div>
+                    <div class="countdown-item">
+                      <span id="second"></span>Seconds
+                    </div>
+                  </div>
+                </div> -->
+                <div class="event-dt-right-group mt-5">
+                  <div class="event-dt-right-icon">
+                    <i class="fa-solid fa-circle-user"></i>
+                  </div>
+                </div>
+                <div class="event-dt-right-group">
+                  <div class="event-dt-right-icon">
+                    <i class="fa-solid fa-calendar-day"></i>
+                  </div>
+                  <div class="event-dt-right-content">
+                    <h4>Date and Time</h4>
+                    <h5><%= event.eventDate %>, <%= event.eventTime %></h5>
+                    <div class="add-to-calendar">
+                      <a
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="fa-regular fa-calendar-days me-3"></i>Add to
+                        Calendar
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" href="#"
+                            ><i class="fa-brands fa-windows me-3"></i>Outlook</a
+                          >
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"
+                            ><i class="fa-brands fa-apple me-3"></i>Apple</a
+                          >
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"
+                            ><i class="fa-brands fa-google me-3"></i>Google</a
+                          >
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"
+                            ><i class="fa-brands fa-yahoo me-3"></i>Yahoo</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="event-dt-right-group">
+                  <div class="event-dt-right-icon">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div class="event-dt-right-content">
+                    <h4>Location</h4>
+                    <h5 class="mb-0"><%= event.venue %></h5>
+                    <!-- <a href="#"
+                      ><i class="fa-solid fa-location-dot me-2"></i>View Map</a
+                    > -->
+                  </div>
+                </div>
+                <div class="select-tickets-block">
+                  <h6>Select Tickets</h6>
+                  <div class="select-ticket-action">
+                    <div class="ticket-price">
+                      ₦<span id="ticket-price"
+                        ><%= event.tickets[0].ticketPrice %></span
+                      >
+                    </div>
+                    <div class="quantity">
+                      <div class="counter">
+                        <!-- <span class="down" onClick="decreaseCount(event, this)"
+                          >-</span -->
+                        <!-- > -->
+                        <input type="text" value="1" id="ticket-quantity" />
+                        <!-- <span class="up" onClick="increaseCount(event, this)"
+                          >+</span -->
+                        <!-- > -->
+                      </div>
+                    </div>
+                  </div>
+                  <p><%= event.tickets[0].ticketDescription %></p>
+                  <div class="xtotel-tickets-count">
+                    <div class="x-title" id="ticket-count-display">
+                      1x Ticket(s)
+                    </div>
+                    <h4>
+                      ₦
+                      <span id="total-price"
+                        ><%= event.tickets[0].ticketPrice %></span
+                      >
+                    </h4>
+                  </div>
+                </div>
+                <div class="booking-btn">
+                  <a href="#" class="main-btn btn-hover w-100" id="book-now-btn"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Body End-->
+    <!-- Footer Start-->
+    <footer class="footer mt-auto">
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-content">
+                <h4>Company</h4>
+                <ul class="footer-link-list">
+                  <li>
+                    <a href="about_us.html" class="footer-link">About Us</a>
+                  </li>
+                  <li>
+                    <a href="help_center.html" class="footer-link"
+                      >Help Center</a
+                    >
+                  </li>
+                  <li><a href="faq.html" class="footer-link">FAQ</a></li>
+                  <li>
+                    <a href="contact_us.html" class="footer-link">Contact Us</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-content">
+                <h4>Useful Links</h4>
+                <ul class="footer-link-list">
+                  <li>
+                    <a href="create.html" class="footer-link">Create Event</a>
+                  </li>
+                  <li>
+                    <a href="sell_tickets_online.html" class="footer-link"
+                      >Sell Tickets Online</a
+                    >
+                  </li>
+                  <li>
+                    <a href="privacy_policy.html" class="footer-link"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li>
+                    <a href="term_and_conditions.html" class="footer-link"
+                      >Terms & Conditions</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-content">
+                <h4>Resources</h4>
+                <ul class="footer-link-list">
+                  <li>
+                    <a href="pricing.html" class="footer-link">Pricing</a>
+                  </li>
+                  <li><a href="our_blog.html" class="footer-link">Blog</a></li>
+                  <li>
+                    <a href="refer_a_friend.html" class="footer-link"
+                      >Refer a Friend</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="footer-content">
+                <h4>Follow Us</h4>
+                <ul class="social-links">
+                  <li>
+                    <a href="#" class="social-link"
+                      ><i class="fab fa-facebook-square"></i
+                    ></a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-link"
+                      ><i class="fab fa-instagram"></i
+                    ></a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-link"
+                      ><i class="fab fa-twitter"></i
+                    ></a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-link"
+                      ><i class="fab fa-linkedin-in"></i
+                    ></a>
+                  </li>
+                  <li>
+                    <a href="#" class="social-link"
+                      ><i class="fab fa-youtube"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+              <div class="footer-content">
+                <h4>Download Mobile App</h4>
+                <div class="download-app-link">
+                  <a href="#" class="download-btn"
+                    ><img src="images/app-store.png" alt=""
+                  /></a>
+                  <a href="#" class="download-btn"
+                    ><img src="images/google-play.png" alt=""
+                  /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="footer-copyright-text">
+                <p class="mb-0">
+                  © 2024, <strong>Barren</strong>. All rights reserved. Powered
+                  by Gambolthemes
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer End-->
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.html"></script>
+    <script src="/vendor/OwlCarousel/owl.carousel.html"></script>
+    <script src="/vendor/bootstrap-select/dist/js/bootstrap-select.min.html"></script>
+    <script src="/js/custom.html"></script>
+    <script src="/js/timer.html"></script>
+    <script src="/js/night-mode.html"></script>
+    <script>
+      const ticketPrice = document.getElementById("ticket-price").textContent;
+      const quantityInput = document.getElementById("ticket-quantity");
+      const totalDisplay = document.getElementById("total-price");
+      const countDisplay = document.getElementById("ticket-count-display");
+
+      // function updateDisplay(count) {
+      //   quantityInput.value = count;
+      //   countDisplay.textContent = `${count}x Ticket(s)`;
+      //   const total = (count * ticketPrice).toFixed(2);
+      //   totalDisplay.textContent = total;
+      // }
+
+      // function increaseCount(event, element) {
+      //   let count = parseInt(quantityInput.value);
+      //   count++;
+      //   updateDisplay(count);
+      // }
+
+      // function decreaseCount(event, element) {
+      //   let count = parseInt(quantityInput.value);
+      //   if (count > 1) {
+      //     count--;
+      //     updateDisplay(count);
+      //   }
+      // }
+
+      document.getElementById("book-now-btn").addEventListener("click", (e) => {
+        e.preventDefault();
+        const count = parseInt(quantityInput.value);
+        const total = totalDisplay.textContent;
+
+        const eventDetails = {
+          id: "<%= event._id %>",
+          name: "<%= event.eventName %>",
+          image: "<%= event.eventBanner %>",
+          date: "<%= event.eventDate %>",
+          time: "<%= event.eventTime %>",
+          venue: "<%= event.venue %>",
+          pricePerTicket: ticketPrice,
+          quantity: count,
+          totalPrice: total,
+          category: "<%= event.category %>",
+        };
+
+        localStorage.setItem("bookingEvent", JSON.stringify(eventDetails));
+        window.location.href = "/checkout";
+      });
+
+      // Share Functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentUrl = window.location.href;
+        const eventName = "<%= event.eventName %>";
+
+        const shareButtons = document.querySelectorAll(".share-btn");
+        shareButtons.forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const platform = this.getAttribute("data-platform");
+            let shareUrl = "";
+
+            switch (platform) {
+              case "whatsapp":
+                shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+                  currentUrl
+                )}`;
+                break;
+              case "copy":
+                copyToClipboard(currentUrl);
+                alert("Link copied!");
+                return;
+            }
+
+            if (shareUrl) {
+              window.open(shareUrl, "_blank");
+            }
+          });
+        });
+
+        function copyToClipboard(text) {
+          navigator.clipboard.writeText(text).then(
+            () => {
+              // Success
+            },
+            (err) => {
+              console.error("Could not copy text: ", err);
+              // Fallback for older browsers
+              const textArea = document.createElement("textarea");
+              textArea.value = text;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand("Copy");
+              textArea.remove();
+            }
+          );
+        }
+      });
+    </script>
+    <script>
+      function signOutUser() {
+        document.cookie =
+          "barren-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "/auth/login";
+      }
+    </script>
+  </body>
+</html>

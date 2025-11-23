@@ -51,7 +51,15 @@ const authController = {
                 return res.status(400).json({ success: false, message: 'Invalid credentials' });
             }
 
-            const token = signToken(user._id);
+            const token = signToken({ userId: user._id });
+
+            res.cookie('barren-token', token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: 24 * 60 * 60 * 1000 // 1 day
+            });
+
             console.log(`User "${user.firstName} ${user.lastName}" logged in.`);
             console.log(user);
             return res.status(201).json({ success: true, message: 'User logged in successfully.', user: { username: user.username }, token });

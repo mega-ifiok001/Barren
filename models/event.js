@@ -18,6 +18,7 @@ const eventSchema = new mongoose.Schema({
     eventDuration: String,
     eventBanner: String,
     eventDescription: String,
+    eventOrganizer: String,
     venue: String,
     addressLine1: String,
     addressLine2: String,
