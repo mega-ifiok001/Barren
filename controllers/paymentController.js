@@ -91,6 +91,12 @@ const verifypayment = async (req, res) => {
             // Check if Ticket exists
             let ticket = await Ticket.findOne({ transactionId: transaction._id });
 
+            // Send Email
+            console.log('Sending email for ticket...');
+
+            const invoiceUrl = `${process.env.APP_URL || 'http://localhost:3000'}/invoice/${invoice._id}`;
+            await sendTicketEmail(user.email, ticket, invoiceUrl, transaction.eventId);
+
             if (!ticket) {
                 ticket = new Ticket({
                     userId: user._id,
@@ -104,7 +110,7 @@ const verifypayment = async (req, res) => {
                 // Send Email
                 console.log('Sending email for ticket...');
 
-                const invoiceUrl = `https://8prsfpp6-3000.uks1.devtunnels.ms/invoice/${invoice._id}`;
+                const invoiceUrl = `${process.env.APP_URL || 'http://localhost:3000'}/invoice/${invoice._id}`;
                 await sendTicketEmail(user.email, ticket, invoiceUrl, transaction.eventId);
             }
 
