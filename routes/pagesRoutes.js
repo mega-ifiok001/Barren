@@ -23,4 +23,4 @@ router.get("/booking_confirmed", verifyToken, pagesController.bookingConfirmed);
 router.get("/invoice/:id", verifyToken, pagesController.viewTicket);
 router.get("/my_invoices", verifyToken, pagesController.myInvoices);
 
-module.exports = router;
+module.exports = router; 
