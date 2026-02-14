@@ -94,7 +94,7 @@ const verifypayment = async (req, res) => {
             // Send Email
             console.log('Sending email for ticket...');
 
-            const invoiceUrl = `${process.env.APP_URL || 'http://localhost:3000'}/invoice/${invoice._id}`;
+            const invoiceUrl = `${process.env.APP_URL || 'https://turbo-winner-wr7vpp4vjrgvf5577.github.dev'}/invoice/${invoice._id}`;
             await sendTicketEmail(user.email, ticket, invoiceUrl, transaction.eventId);
 
             if (!ticket) {

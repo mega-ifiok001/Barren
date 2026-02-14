@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="h-100">
-  <!-- Mirrored from www.gambolthemes.net/html-items/barren-html/disable-demo-link/booking_confirmed.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 19 Nov 2025 21:38:12 GMT -->
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, shrink-to-fit=9" />
-    <meta name="description" content="Gambolthemes" />
-    <meta name="author" content="Gambolthemes" />
+    <meta name="description" content="barren" />
+    <meta name="author" content="barren" />
     <title>Barren - Simple Online Event Ticketing System</title>
 
     <!-- Favicon Icon -->
@@ -39,7 +38,7 @@
   </head>
 
   <body class="d-flex flex-column h-100">
-    <!-- Header Start-->
+   <!-- Header Start-->
     <header class="header">
       <div class="header-inner">
         <nav
@@ -47,21 +46,19 @@
         >
           <div class="container">
             <button
-              class="navbar-toggler"
+              class="navbar-toggler "
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasNavbar"
-              aria-controls="offcanvasNavbar"
             >
-              <span class="navbar-toggler-icon">
-                <i class="fa-solid fa-bars"></i>
-              </span>
+             Menu
             </button>
+
             <a
-              class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 me-auto"
+              class="navbar-brand order-1 order-lg-0 ml-lg-0 ml-2 "
               href="/"
             >
-              <div class="res-main-logo">
+              <div class="res-main-logo ml-auto">
                 <img src="/images/logo-icon.svg" alt="" />
               </div>
               <div class="main-logo" id="logo">
@@ -69,21 +66,21 @@
                 <img class="logo-inverse" src="/images/dark-logo.svg" alt="" />
               </div>
             </a>
+
+            <!-- Mobile Offcanvas Menu (unchanged) -->
             <div
               class="offcanvas offcanvas-start"
               tabindex="-1"
               id="offcanvasNavbar"
-              aria-labelledby="offcanvasNavbarLabel"
             >
               <div class="offcanvas-header">
-                <div class="offcanvas-logo" id="offcanvasNavbarLabel">
+                <div class="offcanvas-logo">
                   <img src="/images/logo-icon.svg" alt="" />
                 </div>
                 <button
                   type="button"
                   class="close-btn"
                   data-bs-dismiss="offcanvas"
-                  aria-label="Close"
                 >
                   <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -102,13 +99,18 @@
                     <a class="nav-link active" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/event/explore">Explore Events</a>
+                    <a class="nav-link" href="/events/explore"
+                      >Explore Events</a
+                    >
                   </li>
                 </ul>
               </div>
             </div>
-            <div class="auth-section d-flex align-items-center">
+
+            <!-- Right Side: Auth Area -->
+            <div class="auth-section d-flex align-items-center ml-auto">
               <% if (!user) { %>
+              <!-- WHEN USER IS LOGGED OUT → Show Sign In & Sign Up buttons -->
               <div id="auth-logged-out" class="d-flex align-items-center gap-3">
                 <a href="/auth/login" class="btn btn-outline-light text-success"
                   >Sign In</a
@@ -118,14 +120,16 @@
                 >
               </div>
               <% } else { %>
+              <!-- WHEN USER IS LOGGED IN → Show Name/Email + Dropdown -->
               <div id="auth-logged-in" class="dropdown">
                 <a
                   href="#"
-                  class="d-flex align-items-center text-white text-decoration-none"
+                  class="d-flex align-items-center ml-auto text-white text-decoration-none"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
+                  <!-- User Avatar + Name (or Email if no name) -->
                   <img
                     src="/images/profile-imgs/img-13.jpg"
                     alt="User"
@@ -133,11 +137,14 @@
                     width="40"
                     height="40"
                   />
+
                   <span class="fw-medium"
                     ><%= user.firstName %> <%= user.lastName %></span
                   >
                   <i class="fas fa-caret-down ms-2"></i>
                 </a>
+
+                <!-- Dropdown Menu -->
                 <ul
                   class="dropdown-menu dropdown-menu-end p-3 shadow-lg border-0"
                 >
@@ -154,28 +161,21 @@
                     </h6>
                     <p class="text-muted small mb-0"><%= user.email %></p>
                   </li>
+
                   <li><hr class="dropdown-divider" /></li>
                   <li>
-                    <a
-                      href="my_organisation_dashboard.html"
-                      class="dropdown-item py-2 rounded"
-                      >My Organisation</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="organiser_profile_view.html"
-                      class="dropdown-item py-2 rounded"
-                      >My Profile</a
-                    >
+                    <a href="/my_invoices" class="dropdown-item py-2 rounded">
+                      My Invoices
+                    </a>
                   </li>
                   <li>
                     <a
                       href="#"
                       class="dropdown-item py-2 rounded text-danger fw-medium"
                       onclick="signOutUser(); return false;"
-                      >Sign Out</a
                     >
+                      Sign Out
+                    </a>
                   </li>
                 </ul>
               </div>
@@ -289,13 +289,13 @@
       <div class="footer-top">
         <div class="container">
           <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
               <div class="footer-content">
                 <h4>Company</h4>
                 <ul class="footer-link-list">
-                  <li>
+                  <!-- <li>
                     <a href="about_us.html" class="footer-link">About Us</a>
-                  </li>
+                  </li> -->
                   <li>
                     <a href="help_center.html" class="footer-link"
                       >Help Center</a
@@ -308,18 +308,14 @@
                 </ul>
               </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
               <div class="footer-content">
                 <h4>Useful Links</h4>
                 <ul class="footer-link-list">
                   <li>
-                    <a href="create.html" class="footer-link">Create Event</a>
+                    <a href="/event/create" class="footer-link">Create Event</a>
                   </li>
-                  <li>
-                    <a href="sell_tickets_online.html" class="footer-link"
-                      >Sell Tickets Online</a
-                    >
-                  </li>
+               
                   <li>
                     <a href="privacy_policy.html" class="footer-link"
                       >Privacy Policy</a
@@ -333,7 +329,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <!-- <div class="col-lg-3 col-md-6">
               <div class="footer-content">
                 <h4>Resources</h4>
                 <ul class="footer-link-list">
@@ -348,8 +344,8 @@
                   </li>
                 </ul>
               </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
+            </div> -->
+            <div class="col-lg-4 col-md-6">
               <div class="footer-content">
                 <h4>Follow Us</h4>
                 <ul class="social-links">
@@ -380,17 +376,6 @@
                   </li>
                 </ul>
               </div>
-              <div class="footer-content">
-                <h4>Download Mobile App</h4>
-                <div class="download-app-link">
-                  <a href="#" class="download-btn"
-                    ><img src="images/app-store.png" alt=""
-                  /></a>
-                  <a href="#" class="download-btn"
-                    ><img src="images/google-play.png" alt=""
-                  /></a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -401,8 +386,7 @@
             <div class="col-12">
               <div class="footer-copyright-text">
                 <p class="mb-0">
-                  © 2024, <strong>Barren</strong>. All rights reserved. Powered
-                  by Gambolthemes
+                  © 2024, <strong>Barren</strong>. All rights reserved.
                 </p>
               </div>
             </div>
