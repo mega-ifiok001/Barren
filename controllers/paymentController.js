@@ -1,138 +1,222 @@
-const { initializePayment, verifyPayment } = require("../services/paystackService.js");
+const { initializePayment, verifyPayment } = require("../services/paystackService");
 
-const Transaction = require("../models/transactions.js");
-const User = require("../models/user.js");
-const Invoice = require("../models/invoice.js");
-const generateInvoiceNumber = require("../utils/generateInvoiceNumber.js");
-const Ticket = require("../models/ticket.js");
-const { sendTicketEmail } = require("../utils/emailService.js");
+const Transaction = require("../models/transactions");
+const User = require("../models/user");
+const Invoice = require("../models/invoice");
+const Ticket = require("../models/ticket");
+const Event = require("../models/event"); // assuming you have an Event model
+const generateInvoiceNumber = require("../utils/generateInvoiceNumber");
+const { sendTicketEmail } = require("../utils/emailService");
 
 const startPayment = async (req, res) => {
-    try {
-        const { email, amount, metadata } = req.body;
+  try {
+    const { email, amount, metadata } = req.body;
 
-        const result = await initializePayment(email, amount, metadata);
-
-        res.json({
-            status: "success",
-            authorization_url: result.data.authorization_url,
-            reference: result.data.reference
-        });
-    } catch (error) {
-        console.log(error.response?.data || error);
-        res.status(500).json({ error: "Payment initialization failed" });
+    if (!email || !amount || !metadata?.userId || !metadata?.eventId) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
-};
 
-const confirmPayment = async (req, res) => {
-    try {
-        const { reference } = req.body;
+    const result = await initializePayment(email, amount, metadata);
 
-        const result = await verifyPayment(reference);
-        console.log(result);
+    const transaction = new Transaction({
+      reference: result.data.reference,
+      userId: metadata.userId,
+      eventId: metadata.eventId,
+      amount,
+      currency: "NGN",
+      status: "pending",
+      eventDetails: {
+        name: metadata.eventName || "Unknown Event",
+        date: metadata.eventDate || "",
+        time: metadata.eventTime || "",
+        quantity: metadata.quantity || 1,
+      },
+      metadata,
+    });
 
-        if (result.data.status === "success") {
-            return res.json({
-                status: "success",
-                message: "Payment verified",
-                data: result.data
-            });
-        }
+    await transaction.save();
 
-        return res.status(400).json({ status: "failed" });
-    } catch (error) {
-        console.log(error.response?.data || error);
-        res.status(500).json({ error: "Verification failed" });
-    }
+    res.json({
+      status: "success",
+      authorization_url: result.data.authorization_url,
+      reference: result.data.reference,
+    });
+  } catch (error) {
+    console.error("startPayment error:", error);
+    res.status(500).json({ error: "Payment initialization failed" });
+  }
 };
 
 const verifypayment = async (req, res) => {
-    try {
-        const { reference } = req.query;
+  try {
+    const { reference } = req.body;
+    if (!reference) return res.status(400).json({ error: "Reference required" });
 
-        const result = await verifyPayment(reference);
+    const paystackResult = await verifyPayment(reference);
 
-        if (result.data.status === "success") {
-            let transaction = await Transaction.findOne({ reference }).populate("eventId");
-
-            // Get user details
-            let user = await User.findById(transaction.userId).select("firstName lastName email");
-            console.log(transaction);
-            console.log(user);
-
-            // Check if invoice already exists
-            let invoice = await Invoice.findOne({ reference });
-
-            if (!invoice) {
-                // Create new invoice
-                invoice = new Invoice({
-                    invoiceNumber: generateInvoiceNumber(),
-                    userId: user._id,
-                    eventId: transaction.eventId._id,
-                    transactionId: transaction._id,
-                    amount: transaction.amount,
-                    currency: transaction.currency || "NGN",
-                    items: [
-                        {
-                            eventName: transaction.eventDetails.name,
-                            eventType: transaction.eventDetails.type || "Venue",
-                            ticketPrice: transaction.eventId.tickets[0].price,
-                            ticketQuantity: transaction.eventDetails.quantity,
-                            ticketTotal: transaction.amount
-                        }
-                    ],
-                    status: "PAID",
-                    reference: reference
-                });
-
-                await invoice.save();
-            }
-
-            // Check if Ticket exists
-            let ticket = await Ticket.findOne({ transactionId: transaction._id });
-
-            // Send Email
-            console.log('Sending email for ticket...');
-
-            const invoiceUrl = `${process.env.APP_URL || 'https://turbo-winner-wr7vpp4vjrgvf5577.github.dev'}/invoice/${invoice._id}`;
-            await sendTicketEmail(user.email, ticket, invoiceUrl, transaction.eventId);
-
-            if (!ticket) {
-                ticket = new Ticket({
-                    userId: user._id,
-                    eventId: transaction.eventId._id,
-                    transactionId: transaction._id,
-                    qrCodeString: transaction._id.toString(), // Simple QR string for now
-                    isUsed: false
-                });
-                await ticket.save();
-
-                // Send Email
-                console.log('Sending email for ticket...');
-
-                const invoiceUrl = `${process.env.APP_URL || 'http://localhost:3000'}/invoice/${invoice._id}`;
-                await sendTicketEmail(user.email, ticket, invoiceUrl, transaction.eventId);
-            }
-
-            // Return event + transaction details to frontend
-            return res.json({
-                success: true,
-                transaction,
-                user,
-                invoice,
-                ticket
-            });
-        }
-
-        return res.status(400).json({ status: "failed" });
-    } catch (error) {
-        console.log(error.response?.data || error);
-        res.status(500).json({ error: "Verification failed" });
+    if (paystackResult.data?.status !== "success") {
+      return res.status(400).json({
+        success: false,
+        message: paystackResult.data?.gateway_response || "Payment not successful",
+      });
     }
+
+    let transaction = await Transaction.findOne({ reference });
+
+    if (!transaction) {
+      // Fallback creation during manual verify
+      const metadata = paystackResult.data.metadata || {};
+      transaction = new Transaction({
+        reference,
+        userId: metadata.userId || null,
+        eventId: metadata.eventId || null,
+        amount: paystackResult.data.amount / 100,
+        currency: paystackResult.data.currency || "NGN",
+        status: "success",
+        channel: paystackResult.data.channel,
+        ip: paystackResult.data.ip_address,
+        eventDetails: {
+          name: metadata.eventName || "Unknown",
+          quantity: metadata.quantity || 1,
+        },
+        metadata,
+      });
+      await transaction.save();
+    } else if (transaction.status !== "success") {
+      transaction.status = "success";
+      transaction.channel = paystackResult.data.channel;
+      transaction.ip = paystackResult.data.ip_address;
+      await transaction.save();
+    }
+
+    res.json({ success: true, transaction });
+  } catch (error) {
+    console.error("verifypayment error:", error);
+    res.status(500).json({ error: "Verification failed" });
+  }
+};
+
+const getBookingDetails = async (req, res) => {
+  try {
+    const { reference } = req.query;
+    if (!reference) {
+      return res.status(400).json({ error: "Reference is required" });
+    }
+
+    let transaction = await Transaction.findOne({ reference });
+
+    // ── FALLBACK: If transaction doesn't exist → verify and create it ─────────────
+    if (!transaction) {
+      console.log(`[FALLBACK] No transaction found for ref ${reference} → verifying with Paystack`);
+
+      const paystackResult = await verifyPayment(reference);
+
+      if (paystackResult.data?.status !== "success") {
+        return res.status(400).json({
+          success: false,
+          message: paystackResult.data?.gateway_response || "Payment not completed",
+        });
+      }
+
+      const metadata = paystackResult.data.metadata || {};
+      const amount = paystackResult.data.amount / 100;
+
+      transaction = new Transaction({
+        reference,
+        userId: metadata.userId || null,
+        eventId: metadata.eventId || null,
+        amount,
+        currency: paystackResult.data.currency || "NGN",
+        status: "success",
+        channel: paystackResult.data.channel,
+        ip: paystackResult.data.ip_address,
+        eventDetails: {
+          name: metadata.eventName || "Event (fallback)",
+          date: "",
+          time: "",
+          quantity: metadata.quantity || 1,
+          image: "", // can be updated later if needed
+        },
+        metadata: metadata || {},
+      });
+
+      await transaction.save();
+      console.log(`[FALLBACK] Created transaction for ${reference}`);
+    }
+
+    // Reload with populated fields
+    transaction = await Transaction.findOne({ reference })
+      .populate("eventId")
+      .populate("userId", "firstName lastName email");
+
+    if (!transaction) {
+      return res.status(404).json({ error: "Transaction could not be loaded" });
+    }
+
+    // Create invoice if missing
+    let invoice = await Invoice.findOne({ reference });
+    if (!invoice && transaction.eventId && transaction.userId) {
+      invoice = new Invoice({
+        invoiceNumber: generateInvoiceNumber(),
+        userId: transaction.userId._id || transaction.userId,
+        eventId: transaction.eventId._id || transaction.eventId,
+        transactionId: transaction._id,
+        amount: transaction.amount,
+        currency: transaction.currency || "NGN",
+        items: [{
+          eventName: transaction.eventDetails?.name || transaction.eventId?.eventName || "Event",
+          ticketQuantity: transaction.eventDetails?.quantity || 1,
+          ticketTotal: transaction.amount,
+        }],
+        status: "PAID",
+        reference,
+      });
+      await invoice.save();
+    }
+
+    // Create ticket if missing (simplified)
+    let ticket = await Ticket.findOne({ transactionId: transaction._id });
+    if (!ticket && transaction.userId && transaction.eventId) {
+      ticket = new Ticket({
+        userId: transaction.userId._id || transaction.userId,
+        eventId: transaction.eventId._id || transaction.eventId,
+        transactionId: transaction._id,
+        qrCodeString: `ticket-${transaction._id}-${Date.now()}`,
+        isUsed: false,
+      });
+      await ticket.save();
+    }
+
+    // Optional: send email (non-blocking)
+    if (ticket && invoice && transaction.userId?.email) {
+      try {
+        const invoiceUrl = `${process.env.APP_URL || "http://localhost:3000"}/invoice/${invoice._id}`;
+        await sendTicketEmail(transaction.userId.email, ticket, invoiceUrl, transaction.eventId);
+      } catch (emailErr) {
+        console.warn("Email failed (non-critical):", emailErr.message);
+      }
+    }
+
+    res.json({
+      success: true,
+      transaction,
+      user: transaction.userId,
+      event: transaction.eventId,
+      invoice,
+      ticket,
+    });
+  } catch (error) {
+    console.error("[getBookingDetails] Error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to load booking details",
+      message: error.message,
+    });
+  }
 };
 
 module.exports = {
-    startPayment,
-    confirmPayment,
-    verifypayment
+  startPayment,
+  verifypayment,
+  getBookingDetails,
 };
