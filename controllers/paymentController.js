@@ -190,7 +190,7 @@ const getBookingDetails = async (req, res) => {
     // Optional: send email (non-blocking)
     if (ticket && invoice && transaction.userId?.email) {
       try {
-        const invoiceUrl = `${process.env.APP_URL || "http://localhost:3000"}/invoice/${invoice._id}`;
+        const invoiceUrl = `${process.env.APP_URL || "https://barren-sbti.onrender.com"}/invoice/${invoice._id}`;
         await sendTicketEmail(transaction.userId.email, ticket, invoiceUrl, transaction.eventId);
       } catch (emailErr) {
         console.warn("Email failed (non-critical):", emailErr.message);

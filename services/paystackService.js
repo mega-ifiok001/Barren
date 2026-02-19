@@ -79,7 +79,9 @@ const verifyPayment = async (reference) => {
             isUsed: false
         });
 
-        ticket.qrCodeString = `8prsfpp6-3000.uks1.devtunnels.ms/api/ticket/${ticket._id}`;
+        ticket.qrCodeString = `https://barren-sbti.onrender.com/api/ticket/${ticket._id}`;
+
+        // ticket.qrCodeString = `8prsfpp6-3000.uks1.devtunnels.ms/api/ticket/${ticket._id}`;
         await ticket.save();
     }
 
