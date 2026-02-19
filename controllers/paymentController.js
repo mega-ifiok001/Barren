@@ -122,7 +122,7 @@ const getBookingDetails = async (req, res) => {
       console.log(`[BOOKING-DETAILS] No transaction found → entering fallback creation mode`);
       
       // Check if Paystack secret key exists
-      if (!process.env.PAYSTACK_SECRET_KEY) {
+      if (!process.env.PAYSTACK_TEST_SECRET_KEY) {
         console.error("[CRITICAL] PAYSTACK_SECRET_KEY is not set in environment variables");
         return res.status(500).json({
           success: false,
