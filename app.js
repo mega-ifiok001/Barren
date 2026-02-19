@@ -35,5 +35,5 @@ app.use('/api/ticket', ticketRoute);
 
 // Start server
 app.listen(port, () => {
-    console.log(`Server listening at https://barren-sbti.onrender.com/${port}`);
+    console.log(`Server listening at http://localhost:${port}`);
 });
