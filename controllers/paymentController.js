@@ -218,6 +218,6 @@ const getBookingDetails = async (req, res) => {
 
 module.exports = {
     startPayment,
-    confirmPayment,
-    verifypayment
+    verifypayment,
+    getBookingDetails
 };
