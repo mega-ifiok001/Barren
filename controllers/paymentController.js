@@ -8,6 +8,7 @@ const Event = require("../models/event"); // assuming you have an Event model
 const generateInvoiceNumber = require("../utils/generateInvoiceNumber");
 const { sendTicketEmail } = require("../utils/emailService");
 
+// Start payment
 const startPayment = async (req, res) => {
   try {
     const { email, amount, metadata } = req.body;
@@ -216,7 +217,7 @@ const getBookingDetails = async (req, res) => {
 };
 
 module.exports = {
-  startPayment,
-  verifypayment,
-  getBookingDetails,
+    startPayment,
+    confirmPayment,
+    verifypayment
 };
